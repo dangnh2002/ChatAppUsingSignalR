@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = Session["Name_Channel"].ToString();
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div style="width:100%;clear:both; text-align:right;margin-bottom:10px;">
+        <button type="button" class="btn btn-info" onclick="Out()">Thoát</button>
+    </div>
+    <ul id="AllMessage" style="min-height: 79vh!important;"></ul>
+    <input type="text" id="message" onkeydown="PressEnter()" autofocus class="form-control d-inline-block" />
+    <input type="button" id="sendmessage" value="Gửi" style="width:60px;" class="btn btn-info d-inline-block" />
+    <input type="hidden" id="displayname" />
+    <input type="hidden" id="ID_channel" value="@ViewBag.ID_channel"/>
+</div>
+@section JavaScript {
+    <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script>
+        $(function () {
+            // Reference
+            var chat = $.connection.chatHub;
+            // Changed
+            chat.client.SendMessage = function (id, name, message) {
+                if($('#ID_channel').val() == id)
+                {
+                    if ($('#displayname').val() == name)
+                    {
+                        // Add the message to the page.
+                        $('#AllMessage').append('<li style="color:#00e600;"><strong>' + htmlEncode(name)
+                            + '</strong>: ' + htmlEncode(message) + '</li>');
+                        var div = document.getElementById("AllMessage");
+                        div.scrollTop = div.scrollHeight - div.clientHeight;
+                    }
+                    else
+                    {
+                        // Add the message to the page.
+                        $('#AllMessage').append('<li style="color:#ff1a1a;"><strong>' + htmlEncode(name)
+                            + '</strong>: ' + htmlEncode(message) + '</li>');
+                        var div = document.getElementById("AllMessage");
+                        div.scrollTop = div.scrollHeight - div.clientHeight;
+                    }
+                }
+            };
+            // Get the user name and store it to prepend to messages.
+            $('#displayname').val(prompt('Nhập tên hiển thị:', ''));
+            // Start the connection.
+            $.connection.hub.start();
+            $('#sendmessage').click(function () {
+                if ($('#message').val() != "")
+                {
+                    // Call the Send method on the hub.
+                    chat.server.send($('#ID_channel').val(), $('#displayname').val(), $('#message').val());
+                    // Clear text box and reset focus for next comment.
+                    $('#message').val('').focus();
+                }
+            });
+        });
+        function PressEnter(s, e) {
+            var keycode = (event.keyCode ? event.keyCode : event.which);
+            if (keycode == '13')
+                $('#sendmessage').click();
+        }
+        // This optional function html-encodes messages for display in the page.
+        function htmlEncode(value) {
+            var encodedValue = $('<div />').text(value).html();
+            return encodedValue;
+        }
+        function Out() {
+            window.location.href = '@Url.Action("OutChannel","Chat")'
+            return;
+        }
+    </script>
+}
