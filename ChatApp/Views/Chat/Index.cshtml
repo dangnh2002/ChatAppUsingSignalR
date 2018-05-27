@@ -4,13 +4,16 @@
 }
 <div class="container">
     <div style="width:100%;clear:both; text-align:right;margin-bottom:10px;">
-        <button type="button" class="btn btn-info" onclick="Out()">Thoát</button>
+        <input type="text" id="UrlChannel" value='http://localhost:62211/chat/JoinMe?channelID=@ViewBag.ID_channel&ChannelPassword=@Session["PasswordChannel"]' class="form-control d-inline-block" width="200px">
+        <button type="button" class="btn btn-info d-inline-block" onclick="Copy()">Copy</button>
+        <button type="button" class="btn btn-info d-inline-block" onclick="Out()">Thoát</button>
     </div>
     <ul id="AllMessage" style="min-height: 79vh!important;"></ul>
     <input type="text" id="message" onkeydown="PressEnter()" autofocus class="form-control d-inline-block" />
     <input type="button" id="sendmessage" value="Gửi" style="width:60px;" class="btn btn-info d-inline-block" />
     <input type="hidden" id="displayname" />
     <input type="hidden" id="ID_channel" value="@ViewBag.ID_channel"/>
+    
 </div>
 @section JavaScript {
     <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
@@ -68,6 +71,12 @@
         function Out() {
             window.location.href = '@Url.Action("OutChannel","Chat")'
             return;
+        }
+        function Copy() {
+            var copyText = document.getElementById("UrlChannel");
+            copyText.select();
+            document.execCommand("copy");
+            //alert(copyText.value);
         }
     </script>
 }
