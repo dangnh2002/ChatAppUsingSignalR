@@ -37,6 +37,8 @@ namespace ChatApp.Controllers
                 var result = list_channel.Where(x => x.Id == channelID && x.Pass == password).FirstOrDefault();
                 if (result != null)
                 {
+                    Session["ID_Channel"] = result.Id;
+                    Session["Name_Channel"] = result.Name;
                     return RedirectToAction("RedirectToChannel", "Chat");
                 }
             }
