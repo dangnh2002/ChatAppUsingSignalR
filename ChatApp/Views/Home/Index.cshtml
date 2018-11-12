@@ -87,8 +87,9 @@
             data: { ID: $('#ID').val(), Pass: $('#Password').val() },
             success: function (data) {
                 switch (data.data) {
-                    case 1:                        
-                        var form = $('<form action="http://localhost:62211/chat" method="post"> <input type="text" name="channel" value="' + $('#ID').val() + '" /></form>');
+                    case 1:
+                        var urlChatIndex = window.location.protocol + "//" + window.location.host + "@Url.Action("Index", "Chat")";
+                        var form = $('<form action="' + urlChatIndex + '" method="post"> <input type="text" name="channel" value="' + $('#ID').val() + '" /></form>');
                         $('body').append(form);
                         form.submit();
                         return;
