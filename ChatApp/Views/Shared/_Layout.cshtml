@@ -13,20 +13,13 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
 <body>
-    <style>
-
-        body {
-            background-color: black;
-            color: white;
-        }
-    </style>
-    <div class="container body-content">
+    <div class="container">
         @RenderBody()
-        <div class="bottom-border" style="margin-top:10px;"></div>
-        <footer>
-            <p>&copy; @DateTime.Now.Year - STIT</p>
-        </footer>
     </div>
+    <footer>
+        <div class="bottom-border" style="margin-top:10px; color:white;"></div>
+        <p>&copy; @DateTime.Now.Year - STIT</p>
+    </footer>
     @RenderSection("JavaScript", required: false)
 </body>
 </html>

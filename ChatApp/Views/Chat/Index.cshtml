@@ -4,22 +4,23 @@
 }
 <div class="container">
     <div style="width:100%;clear:both; text-align:right;margin-bottom:10px;">
-        <input type="text" id="UrlChannel"class="form-control d-inline-block" width="200px">
+        <input type="text" id="UrlChannel" class="form-control d-inline-block" width="200">
         <button type="button" class="btn btn-info d-inline-block" onclick="Copy()">Copy</button>
         <button type="button" class="btn btn-info d-inline-block" onclick="Out()">Thoát</button>
     </div>
-    <ul id="AllMessage" style="min-height: 79vh!important;"></ul>
+    <ul id="AllMessage" class="content"></ul>
     <input type="text" id="message" onkeydown="PressEnter()" autofocus class="form-control d-inline-block" />
     <input type="button" id="sendmessage" value="Gửi" style="width:60px;" class="btn btn-info d-inline-block" />
     <input type="hidden" id="displayname" />
-    <input type="hidden" id="ID_channel" value="@ViewBag.ID_channel"/>
-    
+    <input type="hidden" id="ID_channel" value="@ViewBag.ID_channel" />
+
 </div>
 @section JavaScript {
     <script src="~/Scripts/jquery.signalR-2.2.2.min.js"></script>
     <script src="~/signalr/hubs"></script>
     <script>
         $(function () {
+            $("#AllMessage").height($(window).height() - 170);
             // Reference
             var urlJoinMe = window.location.protocol + '//' + window.location.host + '/chat/JoinMe?channelID=@ViewBag.ID_channel&ChannelPassword=@Session["PasswordChannel"]';
             $("#UrlChannel").val(urlJoinMe);
